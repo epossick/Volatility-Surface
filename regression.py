@@ -72,17 +72,18 @@ ydata=volatility_surface(x,popt[0],popt[1],popt[2],popt[3],popt[4])
 print(est.summary())
 print("RMSE: ",m.sqrt(sm.tools.eval_measures.mse(y_coord,ydata)))
 
-"""Plot graph"""
-fig=plt.figure()
-ax=plt.axes(projection='3d')
 x=moneyness
 y=time
-z= popt[0] + popt[1]*x + popt[2]*x**2 + popt[3]*y + popt[4]*y*x 
-ax.plot_trisurf(x,y,z,cmap='rainbow')
+X,Y=np.meshgrid(sorted(x),sorted(y))
+z= popt[0] + popt[1]*X + popt[2]*X**2 + popt[3]*Y + popt[4]*Y*X 
+fig=plt.figure()
+ax=plt.axes(projection='3d')
+ax.plot_surface(X,Y,z,rcount=50,color='black')
 #ax.scatter(x,y,imp_vol,color='black')
 ax.set_xlabel('moneyness')
 ax.set_ylabel('Expiration')
 ax.set_zlabel('volatility')
 ax.set_title(ticker+' volatility surface')
 plt.show()
+
 
